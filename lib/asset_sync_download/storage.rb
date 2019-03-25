@@ -91,7 +91,7 @@ module AssetSyncDownload
         asset_paths = get_remote_files
       end
 
-      asset_paths.each do |asset_path|
+      asset_paths_with_gzipped(asset_paths).each do |asset_path|
         download_file(asset_path)
       end
     end
@@ -105,9 +105,19 @@ module AssetSyncDownload
         asset_paths = get_remote_files
       end
 
-      asset_paths.each do |asset_path|
+      asset_paths_with_gzipped(asset_paths).each do |asset_path|
         download_file(asset_path)
       end
+    end
+
+    def asset_paths_with_gzipped(asset_paths)
+      files = get_remote_files
+
+      asset_paths.map do |path|
+        to_download = [path]
+        to_download << "#{path}.gz" if files.include?("#{path}.gz")
+        to_download
+      end.flatten
     end
 
     def download_file(file_path, skip_if_existent = true)
