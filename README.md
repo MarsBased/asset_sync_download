@@ -1,6 +1,6 @@
 # AssetSyncDownload
 
-Downloads asset files to Rails applications from a cloud storage, such as AWS S3 and AzureBlob, synchronized with AssetSync gem.
+Downloads asset files (Sprockets + Webpacker) to Rails applications from a cloud storage, such as AWS S3 and AzureBlob, synchronized with AssetSync gem.
 
 It enables you to distribute a manifest file and asset files to load-balanced redundant servers without commiting these files to your repository.
 
@@ -29,15 +29,18 @@ AssetSyncDownload supposes deployment operations as belows:
 
 1. Run `assets:precompile` rake task on your local PC. You should configure AssetSync to upload a manifest file not only asset files.
 2. Deploy rails application to servers. Do not start or restart them.
-3. Run `assets:sync:download` rake task on the servers. It will download the manifest file and asset files.
+3. Run `assets:sync:download` rake task on the servers. It will download the manifest file and asset files, both for Sprockets and Webpacker.
 4. Restart the rails applications.
 
 ### Rake Tasks
 
-* `rake assets:sync:download:manifest` downloads manifest file.
-* `rake assets:sync:download:asset_files` downloads all asset files on a cloud storage.
+* `rake assets:sync:download:manifest` downloads Sprockets manifest file.
+* `rake assets:sync:download:asset_files` downloads all Sprockets asset files on a cloud storage.
     * If you configure AssetSync as `config.manifest = true`, you get only asset files mentioned in the manifest file.
-
+* `rake assets:sync:download:webpacker_manifest` downloads Webpacker manifest file.
+* `rake assets:sync:download:webpacker_asset_files` downloads all Webpacker asset files on a cloud storage.
+    * If you configure AssetSync as `config.manifest = true`, you get only asset files mentioned in the manifest file.
+    
 ## Configuration
 
 ### AssetSyncDownload

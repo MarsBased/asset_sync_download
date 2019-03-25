@@ -11,5 +11,8 @@ module AssetSyncDownload
       end
     end
 
+    def webpacker_enabled?
+      !!defined?(Webpacker)
+    end
   end
 end
