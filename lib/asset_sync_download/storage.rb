@@ -59,7 +59,9 @@ module AssetSyncDownload
     def sprockets_manifest_key
       files = get_remote_files
 
-      if defined?(Sprockets::ManifestUtils)
+      if Rails.application.config.assets.manifest
+        manifest_key = files.find { |f| File.basename(f) == File.basename(Rails.application.config.assets.manifest) }
+      elsif defined?(Sprockets::ManifestUtils)
         manifest_key = files.find { |f| File.basename(f) =~ Sprockets::ManifestUtils::MANIFEST_RE }
         manifest_key ||= files.find { |f| File.basename(f) =~ Sprockets::ManifestUtils::LEGACY_MANIFEST_RE }
       else
