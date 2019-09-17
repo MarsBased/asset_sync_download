@@ -42,10 +42,14 @@ module AssetSyncDownload
       end
     end
 
+    def extract_paths_from_manifest(manifest)
+      manifest.values.map { |v| v.is_a?(Hash) ? extract_paths_from_manifest(v) : v }.flatten
+    end
+
     def get_asset_files_from_webpacker_manifest
       if self.config.manifest
         entries = JSON.parse(Webpacker.config.public_manifest_path.read)
-        entries.values.map { |f| f.sub(/^\//, '') }
+        extract_paths_from_manifest(entries).uniq.map { |f| f.sub(/^\//, '') }
       end
     end
 
